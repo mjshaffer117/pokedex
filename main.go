@@ -1,15 +1,19 @@
 // pokedex
+// main entry code
+
 package main
 
-type Config struct {
-    NextUrl string
-    PrevUrl string
-}
+import (
+    "time"
+    "github.com/mjshaffer117/pokedex/internal/pokeapi"
+)
+
 
 func main() {
-    appConfig := Config{
-        NextUrl: "https://pokeapi.co/api/v2/location-area/",
-        PrevUrl: "",
+    pokeClient := pokeapi.NewClient(5 * time.Second)
+    cfg := &config {
+        pokeapiClient: pokeClient,
     }
-    startRepl(&appConfig)
+
+    startRepl(cfg)
 }

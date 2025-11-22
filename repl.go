@@ -1,15 +1,25 @@
 // pokedex
+// Repl logic
+
 package main
 
 import(
-    "os"
-    "fmt"
-    "strings"
     "bufio"
+    "fmt"
+    "os"
+    "strings"
+    "github.com/mjshaffer117/pokedex/internal/pokeapi"
 )
 
 
-func startRepl(cfg *Config) {
+type config struct {
+    pokeapiClient    pokeapi.Client
+    nextLocationsURL *string
+    prevLocationsURL *string
+}
+
+
+func startRepl(cfg *config) {
     reader := os.Stdin
     scanner := bufio.NewScanner(reader)
     for true {
@@ -40,10 +50,8 @@ func startRepl(cfg *Config) {
 
 
 func cleanInput(text string) []string {
-    var words []string
-        text = strings.TrimSpace(strings.ToLower(text))
-        words = strings.Fields(text)
-
+    output := strings.ToLower(text)
+    words := strings.Fields(output)
     return words
 }
 
@@ -51,7 +59,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
     name          string
     description   string
-    callback      func(cfg *Config) error
+    callback      func(*config) error
 }
 
 
