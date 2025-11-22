@@ -9,7 +9,7 @@ import(
 )
 
 
-func startRepl() {
+func startRepl(cfg *Config) {
     reader := os.Stdin
     scanner := bufio.NewScanner(reader)
     for true {
@@ -26,7 +26,7 @@ func startRepl() {
             fmt.Println("Unknown command")
             continue
         } else {
-            err := command.callback()
+            err := command.callback(cfg)
             if err != nil {
                 fmt.Println(err)
             }
@@ -51,9 +51,8 @@ func cleanInput(text string) []string {
 type cliCommand struct {
     name          string
     description   string
-    callback      func() error
+    callback      func(cfg *Config) error
 }
-
 
 
 func getCommands() map[string]cliCommand {
@@ -67,6 +66,16 @@ func getCommands() map[string]cliCommand {
             name:        "help",
             description: "Displays the help menu",
             callback:    commandHelp,
+        },
+        "map": {
+            name:        "map",
+            description: "Displays the next 20 map locations",
+            callback:    commandMap,
+        },
+        "mapb": {
+            name:        "mapb",
+            description: "Displays the previous 20 map locations (back button)",
+            callback:    commandMapB,
         },
     }
 }
